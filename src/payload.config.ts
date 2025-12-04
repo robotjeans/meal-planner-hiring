@@ -8,6 +8,7 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { seed } from './seed'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -34,4 +35,9 @@ export default buildConfig({
   plugins: [
     // storage-adapter-placeholder
   ],
+  onInit: async (payload) => {
+    if (process.env.PAYLOAD_SEED) {
+      await seed(payload)
+    }
+  },
 })
