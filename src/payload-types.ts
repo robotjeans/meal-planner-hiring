@@ -69,7 +69,7 @@ export interface Config {
   collections: {
     users: User;
     residents: Resident;
-    media: Media;
+    mealOrders: MealOrder;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -79,7 +79,7 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     residents: ResidentsSelect<false> | ResidentsSelect<true>;
-    media: MediaSelect<false> | MediaSelect<true>;
+    mealOrders: MealOrdersSelect<false> | MealOrdersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -162,22 +162,60 @@ export interface Resident {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
+ * via the `definition` "mealOrders".
  */
-export interface Media {
+export interface MealOrder {
   id: number;
-  alt: string;
+  resident: number | Resident;
+  date: string;
+  mealType: 'breakfast' | 'lunch' | 'dinner';
+  status: 'pending' | 'prepared';
+  breakfastOptions?: {
+    accordingToPlan?: boolean | null;
+    breadRoll?: number | null;
+    wholeGrainRoll?: number | null;
+    greyBread?: number | null;
+    sliced?: boolean | null;
+    spread?: boolean | null;
+    butter?: boolean | null;
+    jam?: boolean | null;
+    coffee?: boolean | null;
+    tea?: boolean | null;
+  };
+  lunchOptions?: {
+    portionSize?: ('small' | 'large' | 'vegetarian') | null;
+    soup?: boolean | null;
+    dessert?: boolean | null;
+    pureedFood?: boolean | null;
+    pureedMeat?: boolean | null;
+    slicedMeat?: boolean | null;
+    mashedPotatoes?: boolean | null;
+    noFish?: boolean | null;
+    fingerFood?: boolean | null;
+    onlySweet?: boolean | null;
+  };
+  dinnerOptions?: {
+    accordingToPlan?: boolean | null;
+    greyBread?: number | null;
+    wholeGrainBread?: number | null;
+    whiteBread?: number | null;
+    crispbread?: number | null;
+    spread?: boolean | null;
+    sliced?: boolean | null;
+    butter?: boolean | null;
+    margarine?: boolean | null;
+    soup?: boolean | null;
+    puree?: boolean | null;
+    noFish?: boolean | null;
+    tea?: boolean | null;
+    cocoa?: boolean | null;
+    hotMilk?: boolean | null;
+    coldMilk?: boolean | null;
+    sugar?: boolean | null;
+    sweetener?: boolean | null;
+  };
   updatedAt: string;
   createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -212,8 +250,8 @@ export interface PayloadLockedDocument {
         value: number | Resident;
       } | null)
     | ({
-        relationTo: 'media';
-        value: number | Media;
+        relationTo: 'mealOrders';
+        value: number | MealOrder;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -298,21 +336,65 @@ export interface ResidentsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media_select".
+ * via the `definition` "mealOrders_select".
  */
-export interface MediaSelect<T extends boolean = true> {
-  alt?: T;
+export interface MealOrdersSelect<T extends boolean = true> {
+  resident?: T;
+  date?: T;
+  mealType?: T;
+  status?: T;
+  breakfastOptions?:
+    | T
+    | {
+        accordingToPlan?: T;
+        breadRoll?: T;
+        wholeGrainRoll?: T;
+        greyBread?: T;
+        sliced?: T;
+        spread?: T;
+        butter?: T;
+        jam?: T;
+        coffee?: T;
+        tea?: T;
+      };
+  lunchOptions?:
+    | T
+    | {
+        portionSize?: T;
+        soup?: T;
+        dessert?: T;
+        pureedFood?: T;
+        pureedMeat?: T;
+        slicedMeat?: T;
+        mashedPotatoes?: T;
+        noFish?: T;
+        fingerFood?: T;
+        onlySweet?: T;
+      };
+  dinnerOptions?:
+    | T
+    | {
+        accordingToPlan?: T;
+        greyBread?: T;
+        wholeGrainBread?: T;
+        whiteBread?: T;
+        crispbread?: T;
+        spread?: T;
+        sliced?: T;
+        butter?: T;
+        margarine?: T;
+        soup?: T;
+        puree?: T;
+        noFish?: T;
+        tea?: T;
+        cocoa?: T;
+        hotMilk?: T;
+        coldMilk?: T;
+        sugar?: T;
+        sweetener?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

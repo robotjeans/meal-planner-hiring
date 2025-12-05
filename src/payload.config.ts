@@ -7,9 +7,9 @@ import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
 import { Users } from './collections/Users'
-import { Media } from './collections/Media'
 import { seedData } from './seed'
 import { Residents } from './collections/Residents'
+import { MealOrders } from './collections/MealOrders'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -21,7 +21,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Residents, Media],
+  collections: [Users, Residents, MealOrders],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -38,7 +38,13 @@ export default buildConfig({
   ],
   onInit: async (payload) => {
     if (process.env.PAYLOAD_SEED) {
-      await seedData(payload)
+      try {
+        await seedData(payload)
+        console.log('✅ Seeding completed')
+      } catch (err: any) {
+        console.error('🔥 SEEDING FAILED:', err.message)
+        console.error(err.stack)
+      }
     }
   },
 })
