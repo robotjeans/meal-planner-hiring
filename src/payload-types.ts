@@ -68,6 +68,7 @@ export interface Config {
   blocks: {};
   collections: {
     users: User;
+    residents: Resident;
     media: Media;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
@@ -77,6 +78,7 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
+    residents: ResidentsSelect<false> | ResidentsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -143,6 +145,23 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "residents".
+ */
+export interface Resident {
+  id: number;
+  name: string;
+  room?: string | null;
+  table?: number | null;
+  station?: string | null;
+  dietaryRestrictions?: string | null;
+  highCalorie?: boolean | null;
+  aversions?: string | null;
+  otherNotes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
@@ -187,6 +206,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
+      } | null)
+    | ({
+        relationTo: 'residents';
+        value: number | Resident;
       } | null)
     | ({
         relationTo: 'media';
@@ -256,6 +279,22 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "residents_select".
+ */
+export interface ResidentsSelect<T extends boolean = true> {
+  name?: T;
+  room?: T;
+  table?: T;
+  station?: T;
+  dietaryRestrictions?: T;
+  highCalorie?: T;
+  aversions?: T;
+  otherNotes?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

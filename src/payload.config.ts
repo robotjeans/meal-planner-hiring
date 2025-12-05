@@ -8,7 +8,8 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
-import { seed } from './seed'
+import { seedData } from './seed'
+import { Residents } from './collections/Residents'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -20,7 +21,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media],
+  collections: [Users, Residents, Media],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -35,11 +36,9 @@ export default buildConfig({
   plugins: [
     // storage-adapter-placeholder
   ],
-  /*
   onInit: async (payload) => {
     if (process.env.PAYLOAD_SEED) {
-      await seed(payload)
+      await seedData(payload)
     }
   },
-  */
 })
