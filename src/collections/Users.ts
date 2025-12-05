@@ -8,37 +8,25 @@ export const Users: CollectionConfig = {
   },
   auth: true,
   access: {
-    create: isAdmin,
-    read: isAdmin,
-    update: isAdmin,
-    delete: isAdmin,
+    read: () => true,
+    create: ({ req: { user } }) => user?.role === 'admin',
+    update: ({ req: { user } }) => user?.role === 'admin',
+    delete: ({ req: { user } }) => user?.role === 'admin',
   },
   fields: [
-    // Email added by default
-    // Add more fields as needed
-    {
-      name: 'firstName',
-      label: 'First name',
-      type: 'text',
-    },
-    {
-      name: 'lastName',
-      label: 'Last name',
-      type: 'text',
-    },
     {
       name: 'role',
-      label: 'Role',
-      saveToJWT: true,
       type: 'select',
-      hasMany: true,
-      access: { create: isAdminFieldLevel, update: isAdminFieldLevel },
-      defaultValue: 'caregiver',
       options: [
         { label: 'Admin', value: 'admin' },
-        { label: 'Kitchen', value: 'kitchen' },
         { label: 'Caregiver', value: 'caregiver' },
+        { label: 'Kitchen', value: 'kitchen' },
       ],
+      required: true,
+      access: {
+        read: () => true,
+        update: ({ req: { user } }) => user?.role === 'admin',
+      },
     },
   ],
 }

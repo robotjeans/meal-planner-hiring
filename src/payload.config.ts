@@ -35,9 +35,11 @@ export default buildConfig({
   plugins: [
     // storage-adapter-placeholder
   ],
+  /*
   onInit: async (payload) => {
     if (process.env.PAYLOAD_SEED) {
       await seed(payload)
     }
   },
+  */
 })
